@@ -12,11 +12,21 @@ import { SafeAreaView, Alert, View, StyleSheet, ScrollView, Button, Text } from 
 
 import Loading from "./loading";
 
-const AD_MOB_REWARD_UNIT_ID = "ca-app-pub-3940256099942544/5224354917";
-const AD_MOB_INTERSTITIAL_UNIT_ID = "ca-app-pub-3940256099942544/1033173712";
-const AD_MOB_BANNER_UNIT_ID = "ca-app-pub-3940256099942544/6300978111";
+const AD_MOB_REWARD_UNIT_ID = "ca-app-pub-1961385479154945/8954080963";
+const AD_MOB_BANNER_UNIT_ID1 = "ca-app-pub-1961385479154945/8224588696";
+const AD_MOB_BANNER_UNIT_ID2 = "ca-app-pub-1961385479154945/7983833978";
 
-const TOTAL_ADS_PER_BUTTON = 7;
+//INTERSTITIAL
+const AD_MOB_INTERSTITIAL_UNIT_ID = [
+    "ca-app-pub-1961385479154945/3688176373",
+    "ca-app-pub-1961385479154945/8702035187",
+    "ca-app-pub-1961385479154945/6075871840",
+    "ca-app-pub-1961385479154945/7968178643",
+    "ca-app-pub-1961385479154945/5884300152",
+    "ca-app-pub-1961385479154945/5342015300",
+    "ca-app-pub-1961385479154945/4028933637",
+];
+const TOTAL_ADS_PER_BUTTON = AD_MOB_INTERSTITIAL_UNIT_ID.length;
 
 class Banner extends Component {
     state = {
@@ -27,10 +37,9 @@ class Banner extends Component {
     };
     async componentDidMount() {
         this.openInterstitial = this.openInterstitial.bind(this);
-        await AdMobRewarded.setAdUnitID(AD_MOB_REWARD_UNIT_ID);
-        await AdMobInterstitial.setAdUnitID(AD_MOB_INTERSTITIAL_UNIT_ID);
-
-        await setTestDeviceIDAsync("EMULATOR"); //only for testing
+        try {
+            await AdMobRewarded.setAdUnitID(AD_MOB_REWARD_UNIT_ID);
+        } catch (error) {}
     }
 
     async openInterstitial(id = 0) {
@@ -53,20 +62,25 @@ class Banner extends Component {
                         " of " +
                         TOTAL_ADS_PER_BUTTON;
                     this.setState(newState);
+                    await AdMobInterstitial.setAdUnitID(AD_MOB_INTERSTITIAL_UNIT_ID[totalCloses]);
                     await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: true });
                     await AdMobInterstitial.showAdAsync();
                 }
             });
             let newState = { ...this.state };
+
             newState.loadingMessage =
                 "Loading Ad " + (totalCloses + 1).toString() + " of " + TOTAL_ADS_PER_BUTTON;
             newState.loadingShow = true;
             this.setState(newState);
+            await AdMobInterstitial.setAdUnitID(AD_MOB_INTERSTITIAL_UNIT_ID[totalCloses]);
             await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: true });
             await AdMobInterstitial.showAdAsync();
         } catch (error) {
+            let newState = { ...this.state };
             newState.loadingShow = false;
-            console.error(error);
+            newState.loadingMessage = "";
+            this.setState(newState);
         }
     }
 
@@ -79,7 +93,7 @@ class Banner extends Component {
             }
         }
         if (!flag) {
-            Alert.alert("Error", "First complete all upper tasks");
+            Alert.alert("Wait", "First complete all upper tasks");
             return;
         }
         try {
@@ -90,14 +104,22 @@ class Banner extends Component {
                 this.setState(newState);
                 AdMobRewarded.removeAllListeners();
             });
+            AdMobRewarded.addEventListener("rewardedVideoDidClose", () => {
+                let newState = { ...this.state };
+                newState.loadingShow = false;
+                this.setState(newState);
+                AdMobRewarded.removeAllListeners();
+            });
             let newState = { ...this.state };
             newState.loadingShow = true;
             this.setState(newState);
             await AdMobRewarded.requestAdAsync();
             await AdMobRewarded.showAdAsync();
         } catch (error) {
+            let newState = { ...this.state };
             newState.loadingShow = false;
-            console.error(error);
+            newState.loadingMessage = "";
+            this.setState(newState);
         }
     };
 
@@ -109,15 +131,15 @@ class Banner extends Component {
                         marginTop: 30,
                         alignItems: "center",
                         position: "relative",
+                        margin: 20,
                     }}
                 >
                     <View style={styles.addContainer}>
                         <View style={{ alignItems: "center", marginBottom: 10 }}>
                             <AdMobBanner
-                                onDidFailToReceiveAdWithError={(error) => console.error("error")}
-                                onAdFailedToLoad={(error) => console.error("error")}
+                                onDidFailToReceiveAdWithError={(error) => {}}
                                 bannerSize="mediumRectangle"
-                                adUnitID={AD_MOB_BANNER_UNIT_ID}
+                                adUnitID={AD_MOB_BANNER_UNIT_ID1}
                                 servePersonalizedAds // true or false
                             />
                         </View>
@@ -168,17 +190,12 @@ class Banner extends Component {
                                 onPress={this.openRewarded}
                             />
                         </View>
-                        <PublisherBanner
-                            style={styles.banner}
-                            bannerSize="banner"
-                            adUnitID={AD_MOB_BANNER_UNIT_ID}
-                        />
+
                         <View style={{ alignItems: "center", marginBottom: 40, marginTop: 20 }}>
                             <AdMobBanner
-                                onDidFailToReceiveAdWithError={(error) => console.error("error")}
-                                onAdFailedToLoad={(error) => console.error("error")}
-                                bannerSize="mediumRectangle"
-                                adUnitID={AD_MOB_BANNER_UNIT_ID}
+                                onDidFailToReceiveAdWithError={(error) => {}}
+                                bannerSize="banner"
+                                adUnitID={AD_MOB_BANNER_UNIT_ID2}
                                 servePersonalizedAds // true or false
                             />
                         </View>
@@ -195,8 +212,7 @@ export default Banner;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: "row",
-        justifyContent: "center",
+        margin: 20,
     },
     title: {
         borderRadius: 6,
@@ -208,6 +224,7 @@ const styles = StyleSheet.create({
     },
     addContainer: {
         margin: 20,
+        marginTop: 30,
         zIndex: 1,
     },
     adBtn: {
