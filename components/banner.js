@@ -79,7 +79,7 @@ class Banner extends Component {
             newState.loadingShow = false;
             newState.loadingMessage = "";
             this.setState(newState);
-            Alert.alert("Error", error);
+            Alert.alert("Error", error.toString());
         }
     }
 
@@ -119,7 +119,7 @@ class Banner extends Component {
             newState.loadingShow = false;
             newState.loadingMessage = "";
             this.setState(newState);
-            Alert.alert("Error", error);
+            Alert.alert("Error", error.toString());
         }
     };
 
