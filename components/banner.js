@@ -3,16 +3,14 @@ import {
     AdMobInterstitial,
     PublisherBanner,
     AdMobRewarded,
-    setTestDeviceIDAsync,
     isAvailableAsync,
-    testID,
 } from "expo-ads-admob";
 import React, { Component } from "react";
 import { SafeAreaView, Alert, View, StyleSheet, ScrollView, Button, Text } from "react-native";
 
 import Loading from "./loading";
 
-const AD_MOB_REWARD_UNIT_ID = "ca-app-pub-1961385479154945/8954080963";
+const AD_MOB_REWARD_UNIT_ID = "ca-app-pub-8543443333413101/2147400972";
 const AD_MOB_BANNER_UNIT_ID1 = "ca-app-pub-8543443333413101/4931376792";
 const AD_MOB_BANNER_UNIT_ID2 = "ca-app-pub-8543443333413101/2085721601";
 
@@ -81,7 +79,7 @@ class Banner extends Component {
             newState.loadingShow = false;
             newState.loadingMessage = "";
             this.setState(newState);
-            console.log("Error ", error);
+            Alert.alert("Error", error);
         }
     }
 
@@ -121,6 +119,7 @@ class Banner extends Component {
             newState.loadingShow = false;
             newState.loadingMessage = "";
             this.setState(newState);
+            Alert.alert("Error", error);
         }
     };
 
@@ -192,12 +191,18 @@ class Banner extends Component {
                             />
                         </View>
 
-                        <View style={{ alignItems: "center", marginBottom: 40, marginTop: 20 }}>
+                        <View style={{ alignItems: "center", marginTop: 20 }}>
                             <AdMobBanner
                                 onDidFailToReceiveAdWithError={(error) => {}}
                                 bannerSize="banner"
                                 adUnitID={AD_MOB_BANNER_UNIT_ID2}
-                                servePersonalizedAds // true or false
+                            />
+                        </View>
+                        <View style={{ alignItems: "center", marginBottom: 40, marginTop: 20 }}>
+                            <PublisherBanner
+                                onDidFailToReceiveAdWithError={(error) => {}}
+                                bannerSize="largeBanner"
+                                adUnitID={AD_MOB_BANNER_UNIT_ID2}
                             />
                         </View>
                     </View>
