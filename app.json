@@ -21,14 +21,13 @@
     },
     "android": {
       "config": {
-        "googleMobileAdsAppId": "ca-app-pub-8543443333413101~8479546041"
+        "googleMobileAdsAppId": "ca-app-pub-1961385479154945~3285492322"
       },
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.myapp.AdApp",
-      "versionCode": 1
+      "package": "com.noumanhabib.AdApp"
     },
     "web": {
       "favicon": "./assets/favicon.png"

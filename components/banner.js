@@ -10,19 +10,19 @@ import { SafeAreaView, Alert, View, StyleSheet, ScrollView, Button, Text } from 
 
 import Loading from "./loading";
 
-const AD_MOB_REWARD_UNIT_ID = "ca-app-pub-8543443333413101/2147400972";
-const AD_MOB_BANNER_UNIT_ID1 = "ca-app-pub-8543443333413101/4931376792";
-const AD_MOB_BANNER_UNIT_ID2 = "ca-app-pub-8543443333413101/2085721601";
+const AD_MOB_REWARD_UNIT_ID = "ca-app-pub-1961385479154945/8954080963";
+const AD_MOB_BANNER_UNIT_ID1 = "ca-app-pub-1961385479154945/7983833978";
+const AD_MOB_BANNER_UNIT_ID2 = "ca-app-pub-1961385479154945/8224588696";
 
 //INTERSTITIAL
 const AD_MOB_INTERSTITIAL_UNIT_ID = [
-    "ca-app-pub-8543443333413101/2305213459",
-    "ca-app-pub-8543443333413101/9389496552",
-    "ca-app-pub-8543443333413101/1702578229",
-    "ca-app-pub-8543443333413101/5641823234",
-    "ca-app-pub-8543443333413101/6954904900",
-    "ca-app-pub-8543443333413101/8267986572",
-    "ca-app-pub-8543443333413101/3921353931",
+    "ca-app-pub-1961385479154945/3688176373",
+    "ca-app-pub-1961385479154945/8702035187",
+    "ca-app-pub-1961385479154945/6075871840",
+    "ca-app-pub-1961385479154945/7968178643",
+    "ca-app-pub-1961385479154945/5884300152",
+    "ca-app-pub-1961385479154945/5342015300",
+    "ca-app-pub-1961385479154945/4028933637",
 ];
 const TOTAL_ADS_PER_BUTTON = AD_MOB_INTERSTITIAL_UNIT_ID.length;
 
@@ -128,7 +128,6 @@ class Banner extends Component {
             <View>
                 <ScrollView
                     contentContainerStyle={{
-                        marginTop: 30,
                         alignItems: "center",
                         position: "relative",
                         margin: 20,
